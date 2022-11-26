@@ -12,6 +12,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
 import AddTask from "./src/routes/AddTask/AddTask";
+import Main from "./src/routes/Main/Main";
 
 export type RootStackPropsList = {
   Register: undefined,
@@ -40,7 +41,7 @@ function Inside() {
       >
         <Stack.Screen
           name="Register"
-          component={AddTask}
+          component={Main}
         />
         <Stack.Screen
           name="Login"
