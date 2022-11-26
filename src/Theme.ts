@@ -1,4 +1,4 @@
-import { DarkTheme } from "react-native-paper/"
+import { DefaultTheme } from "react-native-paper/"
 import { white, black, pinkA100 } from "react-native-paper/src/styles/colors"
 import configureFonts from "react-native-paper/src/styles/fonts"
 import color from "color"
@@ -47,4 +47,4 @@ const theme: Readonly<ReactNativePaper.Theme> = {
 
 // import { DefaultTheme as theme } from "react-native-paper"
 
-export default theme;
+export default { ...theme, ...DefaultTheme };

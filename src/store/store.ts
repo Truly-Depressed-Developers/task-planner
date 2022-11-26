@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import counterSlice from "./slices/counterSlice";
+import tasksSlice from "./slices/tasksSlice";
 
 import ExpoFileSystemStorage from "redux-persist-expo-filesystem"
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
@@ -8,6 +8,7 @@ import  tagsSlice  from "./slices/tagsSlice";
 
 const rootReducer = combineReducers({
     labels: tagsSlice
+    tasks: tasksSlice
 });
 
 const persistConfig = {

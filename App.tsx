@@ -20,6 +20,8 @@ import { selectAllLabels } from "./src/store/slices/tagsSlice";
 const Drawer = createDrawerNavigator();
 
 
+import AddTask from "./src/routes/AddTask/AddTask";
+import Main from "./src/routes/Main/Main";
 
 export type RootStackPropsList = {
   TestDrawer: undefined,
@@ -27,7 +29,7 @@ export type RootStackPropsList = {
   Main: undefined
 }
 
-let screen = (n: number) => {
+let screen = (n:number) => {
   return () => <View><Text>{n.toString()}</Text></View>
 }
 
