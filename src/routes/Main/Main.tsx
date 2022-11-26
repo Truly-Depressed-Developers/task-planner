@@ -34,7 +34,7 @@ export default function (props: Props): JSX.Element {
         <View style={{ flex: 1 }}>
             <FlatList
                 data={tasks}
-                keyExtractor={(task) => task.title}
+                keyExtractor={(task) => task.id.toString()}
                 renderItem={({ item }) =>
                     <TaskWrapper
                         id={item.id}

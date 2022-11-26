@@ -1,7 +1,7 @@
 import 'react-native-get-random-values';
 
 import React, { useCallback, useMemo } from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { RootStackPropsList } from '../../../App';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import DropDown from 'react-native-paper-dropdown'
@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { selectTasks, addTask } from '../../store/slices/tasksSlice';
 import { niceDate } from '../../helpers/niceDate';
+import { TextInput, Button, Text } from "react-native-paper"
 
 type Props = WithTheme<NativeStackScreenProps<RootStackPropsList, "Add task">>;
 
@@ -56,6 +57,10 @@ export default function (props: Props): JSX.Element {
         setShowTagDropDown(false);
     }, []);
 
+    const disabled = useMemo(() => {
+        return !(title.length > 0)
+    }, [title]);
+
     // const fun = useCallback(() => {
     //     const produkty = useAppSelector(selectTasks);
     //     console.log(produkty)
@@ -80,26 +85,25 @@ export default function (props: Props): JSX.Element {
     );
     return <View style={styles.container}>
         <View>
-
-            <Text style={[styles.text, styles.title]}>Add task</Text>
             <TextInput
-                style={styles.textInput}
-                placeholder='Title'
+                style={styles.input}
+                label="Title"
+                mode="outlined"
                 value={title}
                 onChangeText={setTitle}
             />
-            <Text style={[styles.text, styles.descriptionText]}>Description</Text>
             <TextInput
-                style={styles.textInput}
+                style={styles.input}
+                label='Description'
+                mode="outlined"
                 value={description}
                 onChangeText={setDescription}
             />
-            <Text style={[styles.text, styles.descriptionText]}>Tag</Text>
             <View
-                style={styles.dropdown}
+                style={[styles.dropdown, styles.input]}
             >
                 <DropDown
-                    // label={"Tag"}
+                    label={"Tag"}
                     mode={"outlined"}
                     visible={tagDropDownOpen}
                     showDropDown={() => setShowTagDropDown(true)}
@@ -110,11 +114,11 @@ export default function (props: Props): JSX.Element {
                 />
             </View>
             <View>
-                <Text style={{ fontSize: 18, alignSelf: "center" }}>Deadline: {date !== undefined ? niceDate(date.getTime()) : "not set"}</Text>
+                <Text style={{ fontSize: 16, alignSelf: "center", marginTop: 16 }}>Deadline: {date !== undefined ? niceDate(date.getTime()) : "not set"}</Text>
                 <Button
-                    title="Set Deadline"
+                    mode="text"
                     onPress={() => setDatePickerOpen(true)}
-                />
+                >Set deadline</Button>
             </View>
             <DatePickerModal
                 locale="en"
@@ -131,14 +135,14 @@ export default function (props: Props): JSX.Element {
         >
 
             <Button
-                title="Add"
-                // onPress={addTask}
+                mode="contained"
+                disabled={disabled}
                 onPress={() => {
                     dispatch(addTask({
                         id: Math.floor(Math.random() * 10000),
                         title: title,
                         description: description,
-                        date: date.getTime(),
+                        date: date?.getTime() || undefined,
                         tag: tag,
                         completed: false
                     }))
@@ -146,28 +150,15 @@ export default function (props: Props): JSX.Element {
                     resetState();
                     props.navigation.navigate("All tasks");
                 }}
-            />
+            >Add task</Button>
         </View>
 
     </View>;
 }
 
 const styles = StyleSheet.create({
-    textInput: {
-        backgroundColor: '#dee2e6',
-        padding: 10
-    },
-    text: {
-        textAlign: "center",
-        marginTop: 16,
-    },
-    title: {
-        marginBottom: 16,
-        fontSize: 24
-    },
-    descriptionText: {
-        marginBottom: 8,
-        fontSize: 18
+    input: {
+        marginBottom: 8
     },
     container: {
         flex: 1,
