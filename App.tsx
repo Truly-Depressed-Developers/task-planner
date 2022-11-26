@@ -11,11 +11,20 @@ import { store, persistor } from './src/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
+import TestContainer from "./src/routes/drawer";
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import Test2 from "./src/routes/test2";
+import { useSelector } from "react-redux";
+import { selectAllLabels } from "./src/store/slices/tagsSlice";
+
+const Drawer = createDrawerNavigator();
+
+
 import AddTask from "./src/routes/AddTask/AddTask";
 import Main from "./src/routes/Main/Main";
 
 export type RootStackPropsList = {
-  Register: undefined,
+  TestDrawer: undefined,
   Login: undefined,
   Main: undefined
 }
@@ -30,28 +39,21 @@ const E3 = screen(3);
 
 function Inside() {
   const Stack = createNativeStackNavigator<RootStackPropsList>();
+  const tagList = useSelector(selectAllLabels);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Register"
-        screenOptions={{
-          headerShown: false
-        }}
+      <Drawer.Navigator
+        drawerContent={(props) => (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            
+          </DrawerContentScrollView>
+        )}
       >
-        <Stack.Screen
-          name="Register"
-          component={Main}
-        />
-        <Stack.Screen
-          name="Login"
-          component={E2}
-        />
-        <Stack.Screen
-          name="Main"
-          component={E3}
-        />
-      </Stack.Navigator>
+        <Drawer.Screen name="Home" component={TestContainer} />
+        <Drawer.Screen name="Test2" component={Test2} />
+      </Drawer.Navigator>
     </NavigationContainer>
   )
 }
@@ -72,3 +74,25 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+
+
+
+/* <Stack.Navigator
+        initialRouteName="TestDrawer"
+        screenOptions={{
+          headerShown: false
+        }}
+      >
+        <Stack.Screen
+          name="TestDrawer"
+          component={DrawerContainer}
+        />
+        <Stack.Screen
+          name="Login"
+          component={E2}
+        />
+        <Stack.Screen
+          name="Main"
+          component={E3}
+        />
+      </Stack.Navigator> */
