@@ -13,7 +13,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
 import TestContainer from "./src/routes/drawer";
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import Test2 from "./src/routes/test2";
+import TagsManagement from "./src/routes/TagsManagement";
 import { useSelector } from "react-redux";
 import { selectAllLabels } from "./src/store/slices/tagsSlice";
 
@@ -23,7 +23,7 @@ import Main from "./src/routes/Main/Main";
 export type RootStackPropsList = {
   "All tasks": undefined,
   "Add task": undefined,
-  "Test2": undefined
+  "Tags": undefined
 }
 
 let screen = (n: number) => {
@@ -37,7 +37,6 @@ const E3 = screen(3);
 function Inside() {
   const Drawer = createDrawerNavigator<RootStackPropsList>();
   const Stack = createNativeStackNavigator<RootStackPropsList>();
-  const tagList = useSelector(selectAllLabels);
 
   return (
     <NavigationContainer>
@@ -50,7 +49,7 @@ function Inside() {
       // )}
       >
         <Drawer.Screen name="All tasks" component={Main} />
-        <Drawer.Screen name="Test2" component={Test2} />
+        <Drawer.Screen name="Tags" component={TagsManagement} />
         <Drawer.Screen
           name="Add task"
           component={AddTask}
