@@ -24,7 +24,7 @@ const TagsManagement = (props: TagsManagementProps) => {
         )}
         style={styles.tagContainer}
       />
-      <FAB icon={'plus'} style={styles.fab} onPress={()=>{
+      <FAB icon={'plus'} style={styles.fab} onPress={() => {
         setAddTagWindowVisible(true)
       }} />
 
@@ -59,12 +59,13 @@ const styles = StyleSheet.create({
     marginTop: 0,
     width: "100%",
     paddingHorizontal: 30,
-    paddingVertical:15,
+    paddingVertical: 15,
   },
   fab: {
     position: "absolute",
     margin: 16,
     right: 0,
     bottom: 0,
+    backgroundColor: "#BB86FC"
   }
 });

@@ -33,6 +33,7 @@ export default function (props: Props): JSX.Element {
     return (
         <View style={{ flex: 1 }}>
             <FlatList
+                contentContainerStyle={{ paddingBottom: 92 }}
                 data={tasks}
                 keyExtractor={(task) => task.id.toString()}
                 renderItem={({ item }) =>
@@ -67,11 +68,13 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
+        backgroundColor: "#BB86FC"
     },
     fab2: {
         position: 'absolute',
         margin: 16,
         left: 0,
         bottom: 0,
+        backgroundColor: "#BB86FC"
     }
 });

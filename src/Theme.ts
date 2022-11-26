@@ -24,7 +24,7 @@ const theme: Readonly<ReactNativePaper.Theme> = {
         disabled: color(white).alpha(0.38).rgb().string(),
         placeholder: color(white).alpha(0.54).rgb().string(),
         backdrop: color(black).alpha(0.5).rgb().string(),
-        notification: pinkA100,
+        notification: accent,
     },
     elevation: {
         dp00: color(surface).mix(color(white), 0).rgb().toString(),
