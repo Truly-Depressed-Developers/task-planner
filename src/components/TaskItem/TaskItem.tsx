@@ -5,19 +5,30 @@ import { Checkbox, Paragraph, Text } from "react-native-paper";
 import { Button } from "react-native-paper";
 import { RootStackPropsList } from "../../../App";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectTasks, addTask, setTaskCompletion } from '../../store/slices/tasksSlice';
 
-type Props = WithTheme<Omit<Task, "id">>;
+type Props = WithTheme<Task>;
 const iconSize = 16;
 
 export default function (props: Props): JSX.Element {
     const [completed, setCompleted] = useState(props.completed);
+    const dispatch = useAppDispatch();
 
     return (
         <View style={styles.task}>
             <View style={styles.left}>
                 <Checkbox
                     status={completed ? "checked" : "unchecked"}
-                    onPress={() => { setCompleted(!completed) }}
+                    onPress={() => { 
+                        let c = !completed
+                        setCompleted(c)
+                        dispatch(setTaskCompletion({
+                            id: props.id,
+                            value: c,
+                        }))
+                     }}
                 />
             </View>
             <View style={styles.right}>

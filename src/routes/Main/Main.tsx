@@ -8,13 +8,14 @@ import { TaskItem } from "../../components/TaskItem";
 
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
-import { selectTasks } from '../../store/slices/tasksSlice';
+import { deleteAllTasks, selectTasks } from '../../store/slices/tasksSlice';
 
 type Props = WithTheme<NativeStackScreenProps<RootStackPropsList, "All tasks">>;
 
-const TaskWrapper = (props: Omit<Task, "id">) => {
+const TaskWrapper = (props: Task) => {
     return <View style={{ paddingBottom: 8 }}>
         <TaskItem
+            id={props.id}
             title={props.title}
             date={props.date}
             description={props.description}
@@ -27,6 +28,7 @@ const TaskWrapper = (props: Omit<Task, "id">) => {
 
 export default function (props: Props): JSX.Element {
     const tasks = useAppSelector(selectTasks);
+    const dispatch = useAppDispatch();
 
     return (
         <View style={{ flex: 1 }}>
@@ -35,6 +37,7 @@ export default function (props: Props): JSX.Element {
                 keyExtractor={(task) => task.title}
                 renderItem={({ item }) =>
                     <TaskWrapper
+                        id={item.id}
                         title={item.title}
                         date={item.date}
                         description={item.description}
@@ -49,6 +52,11 @@ export default function (props: Props): JSX.Element {
                 icon={"plus"}
                 onPress={() => { props.navigation.navigate("Add task") }}
             />
+            <FAB
+                style={styles.fab2}
+                icon={"delete"}
+                onPress={() => { dispatch(deleteAllTasks()) }}
+            />
         </View>
     );
 }
@@ -58,6 +66,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         margin: 16,
         right: 0,
+        bottom: 0,
+    },
+    fab2: {
+        position: 'absolute',
+        margin: 16,
+        left: 0,
         bottom: 0,
     }
 });
