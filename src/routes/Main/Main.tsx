@@ -1,39 +1,16 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { View, Text } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, FAB } from "react-native-paper";
 import { RootStackPropsList } from "../../../App";
 import { TaskItem } from "../../components/TaskItem";
 
-type Props = WithTheme<NativeStackScreenProps<RootStackPropsList, "Register">>;
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectTasks } from '../../store/slices/tasksSlice';
 
-const tasks: Task[] = [
-    {
-        id: 1,
-        title: "Test 1",
-        description: "Description jakieś tam testowe",
-        date: 69420,
-        tag: undefined,
-        completed: false
-    },
-    {
-        id: 2,
-        title: "Test 2",
-        description: "asdasdddasdasdd dasds dsads",
-        date: 6662137,
-        tag: "Szkoła",
-        completed: true
-    },
-    {
-        id: 3,
-        title: "Test 69",
-        description: "Lorem ipsum dolor sit amet",
-        date: 123456789,
-        tag: "Nice",
-        completed: false
-    },
-]
+type Props = WithTheme<NativeStackScreenProps<RootStackPropsList, "All tasks">>;
 
 const TaskWrapper = (props: Omit<Task, "id">) => {
     return <View style={{ paddingBottom: 8 }}>
@@ -49,6 +26,8 @@ const TaskWrapper = (props: Omit<Task, "id">) => {
 }
 
 export default function (props: Props): JSX.Element {
+    const tasks = useAppSelector(selectTasks);
+
     return (
         <View style={{ flex: 1 }}>
             <FlatList
@@ -64,6 +43,21 @@ export default function (props: Props): JSX.Element {
                     />
                 }
             />
+
+            <FAB
+                style={styles.fab}
+                icon={"plus"}
+                onPress={() => { props.navigation.navigate("Add task") }}
+            />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+    }
+});

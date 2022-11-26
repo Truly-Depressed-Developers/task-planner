@@ -17,19 +17,16 @@ import Test2 from "./src/routes/test2";
 import { useSelector } from "react-redux";
 import { selectAllLabels } from "./src/store/slices/tagsSlice";
 
-const Drawer = createDrawerNavigator();
-
-
 import AddTask from "./src/routes/AddTask/AddTask";
 import Main from "./src/routes/Main/Main";
 
 export type RootStackPropsList = {
-  TestDrawer: undefined,
-  Login: undefined,
-  Main: undefined
+  "All tasks": undefined,
+  "Add task": undefined,
+  "Test2": undefined
 }
 
-let screen = (n:number) => {
+let screen = (n: number) => {
   return () => <View><Text>{n.toString()}</Text></View>
 }
 
@@ -38,21 +35,30 @@ const E2 = screen(2);
 const E3 = screen(3);
 
 function Inside() {
+  const Drawer = createDrawerNavigator<RootStackPropsList>();
   const Stack = createNativeStackNavigator<RootStackPropsList>();
   const tagList = useSelector(selectAllLabels);
 
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        drawerContent={(props) => (
-          <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
-            
-          </DrawerContentScrollView>
-        )}
+      // drawerContent={(props) => (
+      //   <DrawerContentScrollView {...props}>
+      //     <DrawerItemList {...props} />
+
+      //   </DrawerContentScrollView>
+      // )}
       >
-        <Drawer.Screen name="Home" component={TestContainer} />
+        <Drawer.Screen name="All tasks" component={Main} />
         <Drawer.Screen name="Test2" component={Test2} />
+        <Drawer.Screen
+          name="Add task"
+          component={AddTask}
+          options={{
+            drawerItemStyle: { height: 0 }
+          }}
+        />
+
       </Drawer.Navigator>
     </NavigationContainer>
   )
