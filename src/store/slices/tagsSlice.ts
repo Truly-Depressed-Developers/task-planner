@@ -2,35 +2,35 @@ import { createSlice } from "@reduxjs/toolkit"
 import { Label } from "../../types/labels"
 import { RootState } from "../store"
 
-type LabelState = {
+type TagsState = {
    labels: Label[],
    idCounter: number
 }
 
-const initialState: LabelState = {
+const initialState: TagsState = {
    labels: [{id:0, name:"Home"}, {id:1, name:"React"}],
    idCounter: 2
 }
 
-type LabelReducers = MakeReducers<LabelState, {
-   addLabel: string,
-   removeLabel: number
-   editLabel: [id:number, name:string]
+type TagReducers = MakeReducers<TagsState, {
+   addTag: string,
+   removeTag: number
+   editTag: [id:number, name:string]
 }>
 
-export const labelSlice = createSlice<LabelState, LabelReducers>({
+export const tagSlice = createSlice<TagsState, TagReducers>({
    name: "counter",
    initialState,
    reducers: {
-      addLabel: (state, action) => { 
+      addTag: (state, action) => { 
          state.labels = [...state.labels, {
             id:state.idCounter++, 
             name:action.payload 
          }]; 
          return state 
       },
-      removeLabel: (state, action)=>{state.labels = state.labels.filter(el=> el.id != action.payload); return state},
-      editLabel: (state, action)=>{
+      removeTag: (state, action)=>{state.labels = state.labels.filter(el=> el.id != action.payload); return state},
+      editTag: (state, action)=>{
          const label = state.labels.find (el=> el.id == action.payload[0]);
          label.name = action.payload[1];
          state.labels = [...state.labels];
@@ -38,9 +38,9 @@ export const labelSlice = createSlice<LabelState, LabelReducers>({
    }
 });
 
-export default labelSlice.reducer;
+export default tagSlice.reducer;
 
-export const { addLabel} = labelSlice.actions;
+export const { addTag: addLabel} = tagSlice.actions;
 
 export const selectAllLabels = (state: RootState) => state.labels.labels;
 export const selectLabel = (labelID: number)=>((state: RootState) => state.labels.labels.find(el=>el.id == labelID));

@@ -4,10 +4,10 @@ import counterSlice from "./slices/counterSlice";
 
 import ExpoFileSystemStorage from "redux-persist-expo-filesystem"
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
-import  labelsSlice  from "./slices/labelsSlice";
+import  tagsSlice  from "./slices/tagsSlice";
 
 const rootReducer = combineReducers({
-    labels: labelsSlice
+    labels: tagsSlice
 });
 
 const persistConfig = {
