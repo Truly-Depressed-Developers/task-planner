@@ -1,6 +1,6 @@
 import 'react-native-get-random-values';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { RootStackPropsList } from '../../../App';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -12,6 +12,7 @@ import 'intl/locale-data/jsonp/en';
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { selectTasks, addTask } from '../../store/slices/tasksSlice';
+import { niceDate } from '../../helpers/niceDate';
 
 type Props = WithTheme<NativeStackScreenProps<RootStackPropsList, "Add task">>;
 
@@ -33,24 +34,27 @@ const tagList = [
 ];
 
 export default function (props: Props): JSX.Element {
-
     const produkty = useAppSelector(selectTasks);
     const dispatch = useAppDispatch();
 
 
-    const [title, setTitle] = React.useState(null);
-    const [description, setDescription] = React.useState(null);
-
-    // const [date, setDate] = React.useState(new Date())
-    // const [datePickerOpen, setDatePickerOpen] = React.useState(false)
+    const [title, setTitle] = React.useState("");
+    const [description, setDescription] = React.useState("");
 
     const [date, setDate] = React.useState<Date | undefined>(undefined);
     const [datePickerOpen, setDatePickerOpen] = React.useState(false);
 
-
-
     const [tag, setTag] = React.useState("inbox")
     const [tagDropDownOpen, setShowTagDropDown] = React.useState(false);
+
+    const resetState = useCallback(() => {
+        setTitle("");
+        setDescription("");
+        setTag(tagList[0].value);
+        setDate(undefined);
+        setDatePickerOpen(false);
+        setShowTagDropDown(false);
+    }, []);
 
     // const fun = useCallback(() => {
     //     const produkty = useAppSelector(selectTasks);
@@ -105,10 +109,13 @@ export default function (props: Props): JSX.Element {
                     list={tagList}
                 />
             </View>
-            <Button
-                title="Set date"
-                onPress={() => setDatePickerOpen(true)}
-            />
+            <View>
+                <Text style={{ fontSize: 18, alignSelf: "center" }}>Deadline: {date !== undefined ? niceDate(date.getTime()) : "not set"}</Text>
+                <Button
+                    title="Set Deadline"
+                    onPress={() => setDatePickerOpen(true)}
+                />
+            </View>
             <DatePickerModal
                 locale="en"
                 mode="single"
@@ -116,22 +123,7 @@ export default function (props: Props): JSX.Element {
                 onDismiss={onDismissSingle}
                 date={date}
                 onConfirm={onConfirmSingle}
-            // validRange={{
-            //   startDate: new Date(2021, 1, 2),  // optional
-            //   endDate: new Date(), // optional
-            //   disabledDates: [new Date()] // optional
-            // }}
-            // onChange={} // same props as onConfirm but triggered without confirmed by user
-            // saveLabel="Save" // optional
-            // saveLabelDisabled={true} // optional, default is false
-            // uppercase={false} // optional, default is true
-            // label="Select date" // optional
-            // animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
-            // startYear={2000} // optional, default is 1800
-            // endYear={2100} // optional, default is 2200
-            // closeIcon="close" // optional, default is "close"
-            // editIcon="pencil" // optional, default is "pencil"
-            // calendarIcon="calendar" // optional, default is "calendar"
+                label={"Deadline"}
             />
         </View>
         <View
@@ -151,6 +143,7 @@ export default function (props: Props): JSX.Element {
                         completed: false
                     }))
 
+                    resetState();
                     props.navigation.navigate("All tasks");
                 }}
             />
