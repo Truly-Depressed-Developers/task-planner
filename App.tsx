@@ -10,7 +10,8 @@ import { Provider as ReduxProvider } from "react-redux"
 import { store, persistor } from './src/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View } from "react-native";
+import { View, Text } from "react-native";
+import AddTask from "./src/routes/AddTask/AddTask";
 
 export type RootStackPropsList = {
   Register: undefined,
@@ -19,7 +20,7 @@ export type RootStackPropsList = {
 }
 
 let screen = (n:number) => {
-  return () => <View>{n.toString()}</View>
+  return () => <View><Text>{n.toString()}</Text></View>
 }
 
 const E1 = screen(1);
@@ -39,7 +40,7 @@ function Inside() {
       >
         <Stack.Screen
           name="Register"
-          component={E1}
+          component={AddTask}
         />
         <Stack.Screen
           name="Login"
