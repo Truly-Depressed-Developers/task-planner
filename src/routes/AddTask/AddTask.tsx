@@ -1,26 +1,21 @@
 import 'react-native-get-random-values';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { RootStackPropsList } from '../../../App';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-// import { Picker } from '@react-native-picker/picker';
 import DropDown from 'react-native-paper-dropdown'
-// import DatePicker from 'react-native-date-picker'
 import {DatePickerModal } from 'react-native-paper-dates'
 type Props = WithTheme<NativeStackScreenProps<RootStackPropsList, "Main">>;
 
 import { registerTranslation, en } from 'react-native-paper-dates';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
+import {useAppDispatch} from '../../hooks/useAppDispatch'
+import {useAppSelector} from '../../hooks/useAppSelector'
+import { selectTasks, addTask } from '../../store/slices/tasksSlice';
 
 registerTranslation('en', en);
-
-// const tags = [
-//     "inbox",
-//     "to jest tag 1",
-//     "to jest tag 2"
-// ]
 
 const tagList = [
     {
@@ -38,6 +33,11 @@ const tagList = [
   ];
 
 export default function (props: Props): JSX.Element {
+
+    const produkty = useAppSelector(selectTasks);
+    const dispatch = useAppDispatch();
+    
+
     const [title, setTitle] = React.useState(null);
     const [description, setDescription] = React.useState(null);
 
@@ -52,9 +52,16 @@ export default function (props: Props): JSX.Element {
     const [tag, setTag] = React.useState("inbox")
     const [tagDropDownOpen, setShowTagDropDown] = React.useState(false);
 
-    function addTask() {
-        props.navigation.navigate("Main")
-    }
+    // const fun = useCallback(() => {
+    //     const produkty = useAppSelector(selectTasks);
+    //     console.log(produkty)
+    //     }, []); //deps
+
+    // const addTask = () => {
+    //     fun()
+    //     props.navigation.navigate("Main")
+        
+    // }
 
     const onDismissSingle = React.useCallback(() => {
         setDatePickerOpen(false);
@@ -133,7 +140,18 @@ export default function (props: Props): JSX.Element {
 
         <Button
             title="Add"
-            onPress={addTask}
+            // onPress={addTask}
+            onPress={()=>{
+                dispatch(addTask({
+                    id: Math.floor(Math.random() * 10000),
+                    title: title,
+                    description: description,
+                    date: date.getTime(),
+                    tag: tag,
+                    completed: false
+                }))
+                // console.log(produkty)
+            }}
         />
         </View>
 
@@ -159,8 +177,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        // backgroundColor: 'red',
-        // display: 'flex',
         alignContent: 'space-between',
         justifyContent: 'space-between',
         padding: 20,
