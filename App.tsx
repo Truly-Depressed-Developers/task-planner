@@ -11,6 +11,7 @@ import { store, persistor } from './src/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text } from "react-native";
+import AddTask from "./src/routes/AddTask/AddTask";
 import Main from "./src/routes/Main/Main";
 
 export type RootStackPropsList = {
